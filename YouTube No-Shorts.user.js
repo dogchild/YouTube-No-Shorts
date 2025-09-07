@@ -3,12 +3,13 @@
 // @name:zh-CN  YouTube 油管去除短视频
 // @name:zh-TW  YouTube 油管去除短视频
 // @namespace    http://tampermonkey.net/
-// @version     2.4
-// @description Hide all Shorts/Short Videos, older browsers are not supported. Added toggle function.
-// @description:zh-CN 隐藏所有 Shorts/短视频，不支持旧浏览器。添加了开关功能。
-// @description:zh-TW 隐藏所有 Shorts/短视频，不支持旧浏览器。添加了开关功能。
+// @version     2.5
+// @description Hide all Shorts/Short Videos on desktop and mobile YouTube, older browsers are not supported. Added toggle function.
+// @description:zh-CN 隐藏桌面版和手机版YouTube上的所有 Shorts/短视频，不支持旧浏览器。添加了开关功能。
+// @description:zh-TW 隱藏桌面版和手機版YouTube上的所有 Shorts/短視頻，不支持舊瀏覽器。添加了開關功能。
 // @author             dogchild
 // @match       https://www.youtube.com/*
+// @match       https://m.youtube.com/*
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @grant       GM_registerMenuCommand
@@ -23,7 +24,7 @@
 
   /* -------------------- Config / constants -------------------- */
 
-  const VERSION = "2.4-optimized";
+  const VERSION = "2.5-mobile-support";
 
   // style element ids
   const CSS_HOME_ID = "__anti_shorts_css_home_v2_4";
@@ -31,6 +32,7 @@
 
   // CSS used (only injected on supported browsers)
   const CSS_SHORTS = `
+    /* 桌面版选择器 */
     ytd-rich-grid-media:has(a[href*="/shorts/"]),
     ytd-video-renderer:has(a[href*="/shorts/"]),
     ytd-grid-video-renderer:has(a[href*="/shorts/"]),
@@ -46,7 +48,17 @@
     /* older reels / shelves fallback */
     ytd-reel-shelf-renderer,
     ytd-rich-shelf-renderer[is-shorts],
-    ytd-shelf-renderer {
+    ytd-shelf-renderer,
+
+    /* 手机版YouTube选择器 */
+    ytm-rich-item-renderer:has(a[href*="/shorts/"]),
+    ytm-compact-video-renderer:has(a[href*="/shorts/"]),
+    ytm-video-renderer:has(a[href*="/shorts/"]),
+    ytm-shorts-lockup-view-model,
+    ytm-shorts-lockup-view-model-v2,
+    ytm-reel-shelf-renderer,
+    ytm-shelf-renderer:has([href*="/shorts/"]),
+    ytm-rich-shelf-renderer:has([href*="/shorts/"]) {
       display: none !important;
     }
   `;
